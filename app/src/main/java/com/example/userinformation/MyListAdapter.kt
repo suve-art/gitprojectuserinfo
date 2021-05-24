@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.example.userinformation.MainActivity
 import com.example.userinformation.R
 
-class MyListAdapter(private val context: MainActivity, private val id: Array<String>, private val name: Array<String>, private val email: Array<String>)
+class MyListAdapter(private val context: MainActivity, private val id: MutableList<String>, private val name: MutableList<String>, private val email: MutableList<String>)
     : ArrayAdapter<String>(context, R.layout.custom_list, name) {
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
