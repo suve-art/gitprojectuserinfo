@@ -8,7 +8,8 @@ import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.userinformation.EmpModelClass
 
-class DatabaseHandler(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,null,DATABASE_VERSION) {
+class DatabaseHandler(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
         private val DATABASE_VERSION = 1
         private val DATABASE_NAME = "EmployeeDatabase"
@@ -17,9 +18,8 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,
         private val KEY_NAME = "name"
         private val KEY_EMAIL = "email"
     }
+
     override fun onCreate(db: SQLiteDatabase?) {
-        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        //creating table with fields
         val CREATE_CONTACTS_TABLE = ("CREATE TABLE " + TABLE_CONTACTS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_EMAIL + " TEXT" + ")")
@@ -27,34 +27,29 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        //  TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        db!!.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS)
+        db!!.execSQL("DROP TABLE IF EXISTS $TABLE_CONTACTS")
         onCreate(db)
     }
 
-
-    //method to insert data
-    fun addEmployee(emp: EmpModelClass):Long{
+    fun addEmployee(emp: EmpModelClass): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(KEY_ID, emp.userId)
-        contentValues.put(KEY_NAME, emp.userName) // EmpModelClass Name
-        contentValues.put(KEY_EMAIL,emp.userEmail ) // EmpModelClass Phone
-        // Inserting Row
+        contentValues.put(KEY_NAME, emp.userName)
+        contentValues.put(KEY_EMAIL, emp.userEmail)
         val success = db.insert(TABLE_CONTACTS, null, contentValues)
-        //2nd argument is String containing nullColumnHack
-        db.close() // Closing database connection
+        db.close()
         return success
     }
-    //method to read data
-    fun viewEmployee():List<EmpModelClass>{
-        val empList:ArrayList<EmpModelClass> = ArrayList<EmpModelClass>()
+
+    fun viewEmployee(): List<EmpModelClass> {
+        val empList: ArrayList<EmpModelClass> = ArrayList<EmpModelClass>()
         val selectQuery = "SELECT  * FROM $TABLE_CONTACTS"
         val db = this.readableDatabase
         var cursor: Cursor? = null
-        try{
+        try {
             cursor = db.rawQuery(selectQuery, null)
-        }catch (e: SQLiteException) {
+        } catch (e: SQLiteException) {
             db.execSQL(selectQuery)
             return ArrayList()
         }
@@ -66,7 +61,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,
                 userId = cursor.getInt(cursor.getColumnIndex("id"))
                 userName = cursor.getString(cursor.getColumnIndex("name"))
                 userEmail = cursor.getString(cursor.getColumnIndex("email"))
-                val emp= EmpModelClass(userId = userId, userName = userName, userEmail = userEmail)
+                val emp = EmpModelClass(userId = userId, userName = userName, userEmail = userEmail)
                 empList.add(emp)
             } while (cursor.moveToNext())
         }

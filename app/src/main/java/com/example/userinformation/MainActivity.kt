@@ -47,10 +47,9 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(applicationContext,"id or name or email cannot be blank",Toast.LENGTH_LONG).show()
         }
     }
-    //
-//method for read records from database in ListView
+
     fun viewRecord(view: View){
-        //creating the instance of DatabaseHandler class
+
         if(isNetworkAvailbale()) {
             var getdata = object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
@@ -84,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                         nameArray, emailArray
                     )
                     listView.adapter = myListAdapter
-                Toast.makeText(applicationContext, sb.toString(),Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, sb.toString(),Toast.LENGTH_LONG).show()
 //
 
                 }
@@ -94,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Network connection is not available", Toast.LENGTH_SHORT).show()
             val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-            //calling the viewEmployee method of DatabaseHandler class to read the records
+
             val emp: List<EmpModelClass> = databaseHandler.viewEmployee()
             val empArrayId: MutableList<String> = ArrayList()
             val empArrayName : MutableList<String> = ArrayList()
@@ -106,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 empArrayEmail.add(e.userEmail)
                 index++
             }
-            //creating custom ArrayAdapter
+
             val myListAdapter = MyListAdapter(this, empArrayId, empArrayName, empArrayEmail)
             listView.adapter = myListAdapter
 
@@ -118,11 +117,3 @@ class MainActivity : AppCompatActivity() {
         return internetInfo!=null && internetInfo.isConnected
     }
 }
-
-
-
-
-
-
-
-
